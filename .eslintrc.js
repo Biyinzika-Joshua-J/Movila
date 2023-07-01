@@ -34,7 +34,7 @@ module.exports = {
         'linebreak-style':0,
         'react/state-in-constructor':0,
         'import/prefer-default-export':0,
-        'max-len':[2,100],
+        'max-len':[2,200],
         'object-curly-newline':0,
         'react/jsx-filename-extension':0,
         'react/jsx-one-expression-per-line':0,
@@ -48,6 +48,7 @@ module.exports = {
         'react/jsx-props-no-speading':0,
         'no-sparse-arrays':0,
         'no-array-index-key':0,
+        'no-unused-vars':'off',
         camelcase:0,
         
     },
