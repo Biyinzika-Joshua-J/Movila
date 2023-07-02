@@ -13,7 +13,7 @@ const Movie = ({ movie, i }) => {
             src={
               movie.poster_path
                 ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                : `https://www.fillmuraay.com/200/300`
+                : `https://i0.wp.com/theperfectroundgolf.com/wp-content/uploads/2022/04/placeholder.png?w=1200&ssl=1`
             }
             alt="movie image"
             className={classes.image}

@@ -5,6 +5,8 @@ import {useTheme} from '@mui/material';
 import useStyles from './styles';
 import { useGetGenresQuery } from '../../services/TMDB';
 import genreIcons from '../../assets/genres'
+import { useDispatch, useSelector } from 'react-redux';
+import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
 
 
 const redLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
@@ -23,6 +25,10 @@ const Sidebar = ({setMobileOpen}) => {
     const theme = useTheme();
     const classes =  useStyles()
     const {data, error, isFetching} = useGetGenresQuery();
+    const dispatch = useDispatch();
+    const {genreIdOrCategoryName} = useSelector(state => state.currentGenreOrCategory);
+
+   
 
     if (isFetching){
       return (
@@ -35,12 +41,12 @@ const Sidebar = ({setMobileOpen}) => {
     if (error){
       return (
         <Box>
-          Erro occured while fetching genres
+          Error occured while fetching genres
         </Box>
       )
     }
 
-    console.log(data)
+
 
   return (
     <>
@@ -55,7 +61,7 @@ const Sidebar = ({setMobileOpen}) => {
           {
             categories.map(({label, value}) => (
               <Link key={value} className={classes.links} to='/' onClick={()=>{}}>
-                <ListItemButton onClick={()=>{}} >
+                <ListItemButton onClick={()=>dispatch(selectGenreOrCategory(value))} >
                 <ListItemIcon>
                     <img src={genreIcons[label.toLowerCase()]} alt='icon' className={classes.genreImages} height={30}/>
                   </ListItemIcon>
@@ -72,7 +78,7 @@ const Sidebar = ({setMobileOpen}) => {
           </ListSubheader>
           {
             data.genres.map(({name, id}) => (
-              <Link key={id} className={classes.links} to='/' onClick={()=>{}}>
+              <Link key={id} className={classes.links} to='/' onClick={()=>dispatch(selectGenreOrCategory(id))}>
                 <ListItemButton onClick={()=>{}} >
                   <ListItemIcon>
                     <img src={genreIcons[name.toLowerCase()]} alt='icon' className={classes.genreImages} height={30}/>

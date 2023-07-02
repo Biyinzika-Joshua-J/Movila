@@ -24,6 +24,7 @@ export default makeStyles((theme)=>({
         height:'300px',
         marginBottom:'10px',
         transition:'ease-in-out all .3s',
+        width:'100%',
         '&:hover':{
            transform:'scale(1.05)'
         }
