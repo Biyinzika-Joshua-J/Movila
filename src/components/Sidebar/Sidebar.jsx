@@ -3,6 +3,7 @@ import { Divider, List, ListItem, ListItemText,ListItemButton, ListSubheader, Li
 import { Link } from 'react-router-dom';
 import {useTheme} from '@mui/material';
 import useStyles from './styles';
+import { useGetGenresQuery } from '../../services/TMDB';
 
 
 const redLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
@@ -27,6 +28,25 @@ const demoCategories = [
 const Sidebar = ({setMobileOpen}) => {
     const theme = useTheme();
     const classes =  useStyles()
+    const {data, error, isFetching} = useGetGenresQuery();
+
+    if (isFetching){
+      return (
+        <Box>
+          <CircularProgress/>
+        </Box>
+      )
+    }
+
+    if (error){
+      return (
+        <Box>
+          Erro occured while fetching genres
+        </Box>
+      )
+    }
+
+    console.log(data)
 
   return (
     <>
@@ -57,13 +77,13 @@ const Sidebar = ({setMobileOpen}) => {
             Genres
           </ListSubheader>
           {
-            demoCategories.map(({label, value}) => (
-              <Link key={value} className={classes.links} to='/' onClick={()=>{}}>
+            data.genres.map(({name, id}) => (
+              <Link key={id} className={classes.links} to='/' onClick={()=>{}}>
                 <ListItemButton onClick={()=>{}} >
                  {/*  <ListItemIcon>
                     <img src={redLogo} alt='icon' className={classes.genreImages} height={30}/>
                   </ListItemIcon> */}
-                  <ListItemText primary={label}/>
+                  <ListItemText primary={name}/>
                 </ListItemButton>
               </Link>
             ))
