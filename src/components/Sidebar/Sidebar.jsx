@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {useTheme} from '@mui/material';
 import useStyles from './styles';
 import { useGetGenresQuery } from '../../services/TMDB';
+import genreIcons from '../../assets/genres'
 
 
 const redLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
@@ -14,13 +15,6 @@ const categories = [
   { label: 'Top Rated', value: 'top_rated' },
   { label: 'Upcoming', value: 'upcoming' },
 ];
-const demoCategories = [
-  { label: 'Comedy', value: 'comedy' },
-  { label: 'Action', value: 'action' },
-  { label: 'Horror', value: 'horror' },
-  { label: 'Animation', value: 'animation' },
-];
-
 
 
 
@@ -62,9 +56,9 @@ const Sidebar = ({setMobileOpen}) => {
             categories.map(({label, value}) => (
               <Link key={value} className={classes.links} to='/' onClick={()=>{}}>
                 <ListItemButton onClick={()=>{}} >
-                 {/*  <ListItemIcon>
-                    <img src={redLogo} alt='icon' className={classes.genreImages} height={30}/>
-                  </ListItemIcon> */}
+                <ListItemIcon>
+                    <img src={genreIcons[label.toLowerCase()]} alt='icon' className={classes.genreImages} height={30}/>
+                  </ListItemIcon>
                   <ListItemText primary={label}/>
                 </ListItemButton>
               </Link>
@@ -80,9 +74,9 @@ const Sidebar = ({setMobileOpen}) => {
             data.genres.map(({name, id}) => (
               <Link key={id} className={classes.links} to='/' onClick={()=>{}}>
                 <ListItemButton onClick={()=>{}} >
-                 {/*  <ListItemIcon>
-                    <img src={redLogo} alt='icon' className={classes.genreImages} height={30}/>
-                  </ListItemIcon> */}
+                  <ListItemIcon>
+                    <img src={genreIcons[name.toLowerCase()]} alt='icon' className={classes.genreImages} height={30}/>
+                  </ListItemIcon>
                   <ListItemText primary={name}/>
                 </ListItemButton>
               </Link>
