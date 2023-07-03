@@ -18,7 +18,7 @@ import {
 import { Link } from "react-router-dom";
 import useStyles from "./styles";
 import { useTheme } from "@mui/material";
-import {Sidebar, Search} from '../index.js';
+import { Sidebar, Search } from "../index.js";
 import { fetchToken, moviesApi, createSessionId } from "../../utils";
 import { create } from "@mui/material/styles/createTransitions";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,31 +30,37 @@ const NavBar = () => {
   const classes = useStyles();
   const isMobile = useMediaQuery("(max-width:600px)");
   const theme = useTheme();
-  const {isAuthenticated, user} = useSelector(state => state.user);
-  const token = localStorage.getItem('request_token');
-  const sessionIdFromLocalStorage = localStorage.getItem('session_id');
+  const { isAuthenticated, user } = useSelector((state) => state.user);
+  const token = localStorage.getItem("request_token");
+  const sessionIdFromLocalStorage = localStorage.getItem("session_id");
 
 
-  useEffect(()=>{
+
+  useEffect(() => {
     const loginUser = async () => {
-      if (token){
-        if (sessionIdFromLocalStorage){
+      if (token) {
+        if (localStorage.getItem("session_id")) {
           // get user data
-          const {data:userData} = await moviesApi.get(`/account?session_id=${sessionIdFromLocalStorage}`);
-          console.log(sessionIdFromLocalStorage)
+          const { data: userData } = await moviesApi.get(
+            `/account?session_id=${sessionIdFromLocalStorage}`
+          );
           dispatch(setUser(userData));
-        }else{
+        } else {
+          if (!localStorage.getItem("session_id")) {
             const sessionId = await createSessionId();
-            console.log(sessionId)
-            const {data:userData} = await moviesApi.get(`/account?session_id=${sessionId}`);
+          
+            const { data: userData } = await moviesApi.get(
+              `/account?session_id=${localStorage.getItem("session_id")}`
+            );
             dispatch(setUser(userData));
+          }
         }
       }
-    }
+    };
     loginUser();
+   
   }, [token]);
 
- 
   return (
     <>
       <AppBar position="fixed">
@@ -64,7 +70,7 @@ const NavBar = () => {
               color="inherit"
               edge="start"
               style={{ outline: "none" }}
-              onClick={() => setMobileOpen(prev => !prev)}
+              onClick={() => setMobileOpen((prev) => !prev)}
               className={classes.menuButton}
             >
               <Menu />
@@ -73,7 +79,7 @@ const NavBar = () => {
           <IconButton color="inherit" sx={{ ml: 1 }} onClick={() => {}}>
             {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
-          {!isMobile && <Search/>}
+          {!isMobile && <Search />}
           <div>
             {!isAuthenticated ? (
               <Button color="inherit" onClick={() => fetchToken()}>
@@ -84,7 +90,7 @@ const NavBar = () => {
                 color="inherit"
                 onClick={() => {}}
                 component={Link}
-                to={`/profile/:id`}
+                to={`/profile/${user.id}`}
                 className={classes.linkButton}
               >
                 {!isMobile && <>My Movies &nbsp;</>}
@@ -98,7 +104,7 @@ const NavBar = () => {
               </Button>
             )}
           </div>
-          {isMobile && <Search/>}
+          {isMobile && <Search />}
         </Toolbar>
       </AppBar>
       <div>
@@ -108,19 +114,19 @@ const NavBar = () => {
               variant="temporary"
               anchor="right"
               open={mobileOpen}
-              onClose={()=>setMobileOpen(prev => !prev)}
-              classes={{paper:classes.drawerPaper}}
-              ModalProps={{keepMounted:true}}
+              onClose={() => setMobileOpen((prev) => !prev)}
+              classes={{ paper: classes.drawerPaper }}
+              ModalProps={{ keepMounted: true }}
             >
-                <Sidebar setMobileOpen={setMobileOpen}/>
+              <Sidebar setMobileOpen={setMobileOpen} />
             </Drawer>
           ) : (
             <Drawer
-                classes={{paper:classes.drawerPaper} }
-                variant='permanent'
-                open={true}
+              classes={{ paper: classes.drawerPaper }}
+              variant="permanent"
+              open={true}
             >
-                <Sidebar setMobileOpen={setMobileOpen}/>
+              <Sidebar setMobileOpen={setMobileOpen} />
             </Drawer>
           )}
         </nav>
