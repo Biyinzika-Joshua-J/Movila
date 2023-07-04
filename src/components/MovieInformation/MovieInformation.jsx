@@ -40,6 +40,7 @@ const MovieInformation = () => {
   const classes = useStyles();
   const isMovieFavorited = true;
   const isMovieWatchListed = true;
+  const [open, setOpen] = useState(false);
 
  
 
@@ -186,7 +187,7 @@ const MovieInformation = () => {
                                 IMDB
                             </Button>
 
-                            <Button onClick={()=>{}} endIcon={<Theaters/>} href="#" >
+                            <Button onClick={() => setOpen(true)} endIcon={<Theaters/>}  >
                                 Trailer
                             </Button>
 
@@ -222,10 +223,20 @@ const MovieInformation = () => {
       </Box>
       <Modal
         closeAfterTransition
-        className={classes.model}
-        open={true}
+        className={classes.modal}
+        open={open}
+        onClose={() => setOpen(false)}
       >
-        open
+        {data?.videos?.results?.length > 0 && (
+          <iframe
+            autoPlay
+            className={classes.video}
+            frameBorder="0"
+            title="Trailer"
+            src={`https://www.youtube.com/embed/${data.videos.results[0].key}`}
+            allow="autoplay"
+          />
+        )}
       </Modal>
     </Grid>
   );
