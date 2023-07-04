@@ -24,20 +24,41 @@ import {
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { useGetMovieQuery } from "../../services/TMDB";
+import { useGetMovieQuery, useGetRecommendationsQuery } from "../../services/TMDB";
 import useStyles from "./styles";
 import genreIcons from "../../assets/genres/index";
 import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
+import {MovieList} from '../index'
+
 
 
 const MovieInformation = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { data, isFetching, error } = useGetMovieQuery(id);
+  const {data:recommendations, isFetching:isFetchingRecommendations, error:isErrorWhileFetchingRecommendations} = useGetRecommendationsQuery({id:id, list:'/recommendations'});
   const classes = useStyles();
   const isMovieFavorited = true;
   const isMovieWatchListed = true;
 
+ 
+
+  if (isFetchingRecommendations) {
+    return (
+      <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
+        <CircularProgress size={"8rem"} />
+      </Box>
+    );
+  }
+
+  if (isErrorWhileFetchingRecommendations) {
+    return (
+      <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
+        An error occured while fetching the recomendations...
+      </Box>
+    );
+  }
+  
   if (isFetching) {
     return (
       <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
@@ -191,6 +212,21 @@ const MovieInformation = () => {
                   </div>
               </Grid>
       </Grid>
+      <Box marginTop={'5rem'} width={'100%'}>
+      <Typography variant="h3" gutterBottom align="center">
+                  You might also like
+      </Typography>
+        {
+          recommendations ? <MovieList numberOfMovies={12} movies={recommendations}/> : 'No recommendations available'
+        }
+      </Box>
+      <Modal
+        closeAfterTransition
+        className={classes.model}
+        open={true}
+      >
+        open
+      </Modal>
     </Grid>
   );
 };

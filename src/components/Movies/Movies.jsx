@@ -20,7 +20,7 @@ const Movies = () => {
     )
   }
 
-  if (!data.results.length){
+  if (!data?.results?.length){
     return (
       <Box display={'flex'} mt={'20px'} justifyContent={'center'}>
         <Typography variant='h4'>
@@ -47,7 +47,7 @@ const Movies = () => {
 
   return (
     <div>
-      <MovieList movies={data}/>
+      <MovieList numberOfMovies={data.results.length} movies={data}/>
     </div>
   )
 }
