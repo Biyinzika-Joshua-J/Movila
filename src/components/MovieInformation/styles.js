@@ -25,7 +25,7 @@ export default makeStyles((theme)=>({
         [theme.breakpoints.down('md')]:{
             margin:'0 auto',
             width:'100%',
-            height:'350px',
+         
          },
     },
     genreContainer:{
@@ -55,6 +55,9 @@ export default makeStyles((theme)=>({
         height:'8em',
         objectFit:'cover',
         borderRadius:'10px',
+        [theme.breakpoints.down('md')]:{
+
+        }
     },
     buttonsContainer:{
        

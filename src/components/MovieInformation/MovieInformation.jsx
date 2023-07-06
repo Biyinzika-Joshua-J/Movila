@@ -128,10 +128,8 @@ const MovieInformation = () => {
             </Typography>
           </Box>
           <Typography variant="h6" align={"center"} gutterBottom>
-            {data?.runtime} mins /{" "}
-            {data?.spoken_languages.length > 0
-              ? data?.spoken_languages[0].name
-              : ""}
+            {data?.runtime} mins |{" "}
+            {data?.spoken_languages[0].name}
           </Typography>
         </Grid>
         <Grid item className={classes.genreContainer}>

@@ -59,7 +59,7 @@ function Actors() {
       <Box margin="2rem 0">
         <Typography variant="h2" gutterBottom align="center">Movies</Typography>
         {movies && <MovieList movies={movies} numberOfMovies={12} />}
-        <Pagination currentPage={page} setPage={setPage} totalPages={movies.total_pages}/>
+        <Pagination currentPage={page} setPage={setPage} totalPages={movies?.total_pages}/>
       </Box>
     </>
   );

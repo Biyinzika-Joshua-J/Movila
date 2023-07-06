@@ -24,6 +24,7 @@ import { create } from "@mui/material/styles/createTransitions";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../features/auth";
 
+
 const NavBar = () => {
   const dispatch = useDispatch();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -63,7 +64,7 @@ const NavBar = () => {
 
   return (
     <>
-      <AppBar position="fixed">
+      <AppBar position="fixed" sx={{width:'100%'}}>
         <Toolbar className={classes.toolbar}>
           {isMobile && (
             <IconButton
