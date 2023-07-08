@@ -49,17 +49,31 @@ const MovieInformation = () => {
   const [isMovieFavorited, setIsMovieFavorited] = useState(false);
   const [isMovieWatchListed, setIsMovieWatchListed] = useState(false);
   const [open, setOpen] = useState(false);
-  const {user} = useSelector(state => state.user)
-  const { data: favoriteMovies } = useGetListQuery({ listName: 'favorite/movies', accountId: user.id, sessionId: localStorage.getItem('session_id'), page: 1 });
-  const { data: watchlistMovies } = useGetListQuery({ listName: 'watchlist/movies', accountId: user.id, sessionId: localStorage.getItem('session_id'), page: 1 });
+  const { user } = useSelector((state) => state.user);
+  const { data: favoriteMovies } = useGetListQuery({
+    listName: "favorite/movies",
+    accountId: user.id,
+    sessionId: localStorage.getItem("session_id"),
+    page: 1,
+  });
+  const { data: watchlistMovies } = useGetListQuery({
+    listName: "watchlist/movies",
+    accountId: user.id,
+    sessionId: localStorage.getItem("session_id"),
+    page: 1,
+  });
 
-  useEffect(()=>{
-     setIsMovieFavorited(!!favoriteMovies?.results?.find((movie) => movie?.id === data?.id));
-  }, [favoriteMovies, data])
+  useEffect(() => {
+    setIsMovieFavorited(
+      !!favoriteMovies?.results?.find((movie) => movie?.id === data?.id)
+    );
+  }, [favoriteMovies, data]);
 
-  useEffect(()=>{
-    setIsMovieWatchListed(!!watchlistMovies?.results?.find((movie) => movie?.id === data?.id));
- }, [watchlistMovies, data])
+  useEffect(() => {
+    setIsMovieWatchListed(
+      !!watchlistMovies?.results?.find((movie) => movie?.id === data?.id)
+    );
+  }, [watchlistMovies, data]);
 
   if (isFetchingRecommendations) {
     return (
@@ -92,41 +106,83 @@ const MovieInformation = () => {
       </Box>
     );
   }
-  
 
   const addToFavorites = async () => {
     try {
-      await axios.post(`https://api.themoviedb.org/3/account/${user.id}/favorite?api_key=${process.env.REACT_APP_TMDB_API_KEY}&session_id=${localStorage.getItem('session_id')}`, {
-        media_type:'movie',
-        media_id:id,
-        favorite:!isMovieFavorited,
-      });
-      setIsMovieFavorited(prev => !prev);
+      await axios.post(
+        `https://api.themoviedb.org/3/account/${user.id}/favorite?api_key=${
+          process.env.REACT_APP_TMDB_API_KEY
+        }&session_id=${localStorage.getItem("session_id")}`,
+        {
+          media_type: "movie",
+          media_id: id,
+          favorite: !isMovieFavorited,
+        }
+      );
+      setIsMovieFavorited((prev) => !prev);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
   const addToWatchList = async () => {
-   try {
-    await axios.post(`https://api.themoviedb.org/3/account/${user.id}/watchlist?api_key=${process.env.REACT_APP_TMDB_API_KEY}&session_id=${localStorage.getItem('session_id')}`, {
-      media_type:'movie',
-      media_id:id,
-      watchlist:!isMovieWatchListed,
-    })
-    setIsMovieWatchListed(prev => !prev);
-   } catch (error) {
-      console.log(error)
-   }
-   
+    try {
+      await axios.post(
+        `https://api.themoviedb.org/3/account/${user.id}/watchlist?api_key=${
+          process.env.REACT_APP_TMDB_API_KEY
+        }&session_id=${localStorage.getItem("session_id")}`,
+        {
+          media_type: "movie",
+          media_id: id,
+          watchlist: !isMovieWatchListed,
+        }
+      );
+      setIsMovieWatchListed((prev) => !prev);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+
+
+  let modal;
+
+  if (data.videos?.results?.length === 0) {
+    modal = <div></div>;
+  }else{
+    modal = (
+      <Modal
+        closeAfterTransition
+        className={classes.modal}
+        open={open}
+        onClose={() => setOpen(false)}
+      >
+        {data?.videos?.results.length >= 1 ? (
+          <iframe
+            autoPlay
+            className={classes.video}
+            frameBorder="0"
+            title="Trailer"
+            src={`https://www.youtube.com/embed/${data?.videos?.results[0]?.key}`}
+            allow="autoplay"
+          />
+        ) : (
+          ""
+        )}
+      </Modal>
+    );
+  }
+
+ 
+
+ 
 
   return (
     <Grid container className={classes.containerSpaceAround}>
       <Grid item sm={12} lg={4}>
         <img
           src={
-            data.backdrop_path
+            data?.backdrop_path
               ? `https://image.tmdb.org/t/p/w500/${data.backdrop_path}`
               : `https://i0.wp.com/theperfectroundgolf.com/wp-content/uploads/2022/04/placeholder.png?w=1200&ssl=1`
           }
@@ -136,7 +192,7 @@ const MovieInformation = () => {
       </Grid>
       <Grid item container direction={"column"} lg={"7"}>
         <Typography variant="h3" align={"center"} gutterBottom>
-          {data?.title} ({data.release_date.split("-")[0]})
+          {data?.title} ({data?.release_date.split("-")[0]})
         </Typography>
         <Typography variant="h5" align={"center"} gutterBottom>
           {data?.tagline}
@@ -161,8 +217,7 @@ const MovieInformation = () => {
             </Typography>
           </Box>
           <Typography variant="h6" align={"center"} gutterBottom>
-            {data?.runtime} mins |{" "}
-            {data?.spoken_languages[0].name}
+            {data?.runtime} mins | {data?.spoken_languages[0].name}
           </Typography>
         </Grid>
         <Grid item className={classes.genreContainer}>
@@ -200,7 +255,7 @@ const MovieInformation = () => {
         </Typography>
         <Grid item container spacing={2}>
           {data &&
-            data.credits?.cast
+            data?.credits?.cast
               ?.map(
                 (character, index) =>
                   character.profile_path && (
@@ -304,23 +359,7 @@ const MovieInformation = () => {
           "No recommendations available"
         )}
       </Box>
-      <Modal
-        closeAfterTransition
-        className={classes.modal}
-        open={open}
-        onClose={() => setOpen(false)}
-      >
-        {data?.videos?.results?.length > 0 && (
-          <iframe
-            autoPlay
-            className={classes.video}
-            frameBorder="0"
-            title="Trailer"
-            src={`https://www.youtube.com/embed/${data.videos.results[0].key}`}
-            allow="autoplay"
-          />
-        )}
-      </Modal>
+      {modal}
     </Grid>
   );
 };
