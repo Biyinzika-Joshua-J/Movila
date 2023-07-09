@@ -7,10 +7,12 @@ import { useGetGenresQuery } from '../../services/TMDB';
 import genreIcons from '../../assets/genres'
 import { useDispatch, useSelector } from 'react-redux';
 import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
+import Loader from './Loader';
+import MovillaLightLogo from '../../assets/logo/movilla.png';
+import MovillaRedLogo from '../../assets/logo/movilla-red.png';
 
-
-const redLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
-const blueLogo = 'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
+const redLogo = MovillaLightLogo;
+const blueLogo = MovillaRedLogo;
 
 const categories = [
   { label: 'Popular', value: 'popular' },
@@ -33,7 +35,7 @@ const Sidebar = ({setMobileOpen}) => {
     if (isFetching){
       return (
         <Box>
-          <CircularProgress/>
+          <Loader/>
         </Box>
       )
     }

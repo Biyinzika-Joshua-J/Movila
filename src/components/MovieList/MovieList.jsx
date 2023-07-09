@@ -14,10 +14,12 @@ const MovieList = ({movies, numberOfMovies}) => {
   return (
     <Grid container className={classes.moviesContainer}>
         {
-          movies?.results.slice(0, numberOfMovies).map((movie, index) => (<Movie key={index} i={index} movie={movie}/>))
+          movies?.results?.map((movie, index) => (<Movie key={index} i={index} movie={movie}/>))
         }
     </Grid>
   )
 }
+
+//  movies?.results.slice(0, numberOfMovies).map((movie, index) => (<Movie key={index} i={index} movie={movie}/>))
 
 export default MovieList

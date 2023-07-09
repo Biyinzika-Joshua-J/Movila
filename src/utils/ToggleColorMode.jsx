@@ -4,8 +4,9 @@ import { createTheme, ThemeProvider } from "@mui/material";
 export const ColorModeContext = createContext();
 
 const ToggleColorMode = ({children}) => {
-    const [mode, setMode] = useState('light');
-
+    const [prefersDarkMode, setPrefersDarkMode] = useState(
+        () => window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const [mode, setMode] = useState(prefersDarkMode?'dark':'light');
     const toggleColorMode = () => {
         setMode(prev => prev==='light'?'dark':'light');
     }

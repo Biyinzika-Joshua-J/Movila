@@ -11,9 +11,9 @@ import { useGetMoviesQuery } from "../../services/TMDB";
 import { MovieList } from "../index";
 import { useDispatch, useSelector } from "react-redux";
 import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
-import { Pagination, FeaturedMovie } from "../index";
+import { FeaturedMovie } from "../index";
 import Loader from "./Loader";
-
+import {PaginationBar} from "../index";
 
 const Movies = () => {
   const [page, setPage] = useState(1);
@@ -27,12 +27,18 @@ const Movies = () => {
     page,
     searchQuery,
   });
+
+  useEffect(()=>{
+      setPage(1);
+  }, [genreIdOrCategoryName, searchQuery])
+  const [movies, setMovies] = useState([]);
+
   const isMobile = useMediaQuery("(max-width:750px)");
 
-  if (isFetching) {
-    return (
-     <Loader/>
-    );
+  
+
+  if (isFetching && movies.length <= 20) {
+    return <Loader />;
   }
 
   if (!data?.results?.length) {
@@ -55,15 +61,15 @@ const Movies = () => {
     );
   }
 
+
+
+
   return (
-    <div>
+    <div >
       <FeaturedMovie movie={data.results[0]} />
       <MovieList numberOfMovies={data.results.length} movies={data} />
-      <Pagination
-        currentPage={page}
-        setPage={setPage}
-        totalPages={data?.total_pages}
-      />
+     
+      <PaginationBar total_pages={data?.total_pages}  setPage={setPage} page={page}  />
     </div>
   );
 };

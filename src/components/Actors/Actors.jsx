@@ -6,7 +6,8 @@ import { ArrowBack } from '@mui/icons-material';
 import useStyles from './styles';
 import { useGetActorQuery, useGetMoviesByActorIdQuery } from '../../services/TMDB';
 import { MovieList,  } from '../index';
-import {Pagination} from '../index';
+import {PaginationBar} from '../index';
+import Loader from '../MovieInformation/Loader';
 
 function Actors() {
   const classes = useStyles();
@@ -21,7 +22,7 @@ function Actors() {
   if (isFetching) {
     return (
       <Box display="flex" alignItems="center" justifyContent="center">
-        <CircularProgress size="8rem" />
+        <Loader/>
       </Box>
     );
   }
@@ -59,7 +60,7 @@ function Actors() {
       <Box margin="2rem 0">
         <Typography variant="h2" gutterBottom align="center">Movies</Typography>
         {movies && <MovieList movies={movies} numberOfMovies={12} />}
-        <Pagination currentPage={page} setPage={setPage} totalPages={movies?.total_pages}/>
+        <PaginationBar page={page} setPage={setPage} total_pages={movies?.total_pages}/>
       </Box>
     </>
   );
