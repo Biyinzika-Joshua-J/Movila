@@ -38,7 +38,6 @@ const NavBar = () => {
 
   const colorMode = useContext(ColorModeContext);
 
-console.log(colorMode)
 
 
   useEffect(() => {

@@ -10,6 +10,7 @@ import {
   useMediaQuery,
   Rating,
   Tooltip,
+  Hidden,
 } from "@mui/material";
 import {
   Movie as MovieIcon,
@@ -34,6 +35,7 @@ import genreIcons from "../../assets/genres/index";
 import { selectGenreOrCategory } from "../../features/currentGenreOrCategory";
 import { MovieList } from "../index";
 import { useNavigate } from "react-router-dom";
+import Loader from "./Loader";
 
 const MovieInformation = () => {
   const navigate = useNavigate();
@@ -75,10 +77,10 @@ const MovieInformation = () => {
     );
   }, [watchlistMovies, data]);
 
-  if (isFetchingRecommendations) {
+  if (true) {
     return (
       <Box display={"flex"} justifyContent={"center"} alignItems={"center"}>
-        <CircularProgress size={"8rem"} />
+        <Loader/>
       </Box>
     );
   }
@@ -286,11 +288,13 @@ const MovieInformation = () => {
               )
               .slice(0, 6)}
         </Grid>
-        <Grid style={{ marginTop: "2rem" }} item container>
+        <Grid style={{ marginTop: "2rem" }} item container >
           <div className={classes.buttonsContainer}>
             <Grid item xs={12} sm={6} className={classes.buttonsContainer}>
               <ButtonGroup size="small" variant="outlined">
                 <Button
+
+                  sx={{margin:'.2rem .2rem'}} 
                   target="_blank"
                   href={data?.homepage}
                   rel="noopener noreferrer"
@@ -300,6 +304,7 @@ const MovieInformation = () => {
                 </Button>
 
                 <Button
+                  sx={{margin:'.2rem .2rem'}} 
                   target="_blank"
                   href={`https://www.imdb.com/title/${data?.imdb_id}`}
                   rel="noopener noreferrer"
@@ -308,12 +313,13 @@ const MovieInformation = () => {
                   IMDB
                 </Button>
 
-                <Button onClick={() => setOpen(true)} endIcon={<Theaters />}>
+                <Button    sx={{margin:'.2rem .2rem'}}   onClick={() => setOpen(true)} endIcon={<Theaters />}>
                   Trailer
                 </Button>
               </ButtonGroup>
               <ButtonGroup size="small" variant="outlined">
                 <Button
+                   sx={{margin:'.2rem .2rem'}} 
                   onClick={() => addToFavorites()}
                   endIcon={
                     isMovieFavorited ? <FavoriteBorderOutlined /> : <Favorite />
@@ -323,6 +329,7 @@ const MovieInformation = () => {
                 </Button>
 
                 <Button
+                   sx={{margin:'.2rem .2rem'}} 
                   onClick={() => addToWatchList()}
                   endIcon={isMovieWatchListed ? <Remove /> : <PlusOne />}
                 >
@@ -330,9 +337,10 @@ const MovieInformation = () => {
                 </Button>
 
                 <Button
+                 
                   onClick={() => navigate(-1)}
                   endIcon={<ArrowBack />}
-                  sx={{ borderColor: "primary.main", textUnderline: "none" }}
+                  sx={{ borderColor: "primary.main", textUnderline: "none", margin:'.2rem .5rem' }}
                 >
                   <Typography
                     style={{ textDecoration: "none" }}
